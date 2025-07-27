@@ -1,0 +1,9 @@
+# Dependencies for AI News Digest
+beautifulsoup4>=4.12.0  # HTML parsing and content extraction
+requests>=2.31.0        # HTTP requests for web scraping
+lxml>=4.9.0            # XML/HTML parser
+openai>=1.30.0         # AI summarization
+python-telegram-bot>=20.7  # Telegram bot API
+schedule>=1.2.0        # Task scheduling
+python-dotenv>=1.0.0   # Environment variables
+# Note: sqlite3 is built into Python, no need to install 

@@ -1,0 +1,42 @@
+services:
+  ai-digest-bot:
+    build: .
+    container_name: ai-news-digest-bot
+    restart: unless-stopped
+    
+    environment:
+      # OpenAI Configuration
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      
+      # Telegram Configuration
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHANNEL_ID=${TELEGRAM_CHANNEL_ID}
+      
+      # Optional Configuration (with defaults)
+      - MAX_ARTICLES_PER_DIGEST=${MAX_ARTICLES_PER_DIGEST:-15}
+      - SUMMARY_MAX_WORDS=${SUMMARY_MAX_WORDS:-100}
+      - DIGEST_TIME=${DIGEST_TIME:-09:00}
+      - DATABASE_PATH=/app/data/news_digest.db
+    
+    volumes:
+      # Persist database and logs
+      - ./data:/app/data
+      - ./logs:/app/logs
+    
+    # Optional: expose port for health checks
+    ports:
+      - "8000:8000"
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sqlite3; sqlite3.connect('/app/data/news_digest.db').execute('SELECT 1')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3" 
