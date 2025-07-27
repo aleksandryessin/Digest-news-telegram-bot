@@ -28,4 +28,4 @@ ENV DATABASE_PATH=/app/data/news_digest.db
 EXPOSE 8000
 
 # Default command - run the scheduler
-CMD ["python", "daily_digest_bot.py", "schedule"] 
+CMD ["python", "src/main.py", "schedule"] 

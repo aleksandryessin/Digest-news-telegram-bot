@@ -1,207 +1,258 @@
-# 🤖 AI News Digest System
+# 🤖 AI News Digest Bot
 
-A comprehensive AI news aggregation system that fetches, analyzes, and ranks the most relevant AI articles from 8 major tech news sources.
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
+[![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED.svg)](https://docker.com)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991.svg)](https://openai.com)
+[![Telegram](https://img.shields.io/badge/Telegram-Bot-26A5E4.svg)](https://telegram.org)
 
-## 🎯 What It Does
+Автоматизированный бот для сбора, анализа и публикации дайджестов новостей ИИ в Telegram каналах на русском языке.
 
-This system automatically:
-1. **Fetches** articles from 8 major AI news sources
-2. **Analyzes** hundreds of articles for relevance using intelligent scoring
-3. **Ranks** them based on keywords, companies, recency, and source quality
-4. **Selects** the top 15 most relevant articles globally
-5. **Displays** results with transparency (shows why each article scored highly)
-6. **Saves** to a clean digest file for easy consumption
+**English**: An automated bot that collects, analyzes, and publishes AI news digests to Telegram channels in Russian.
 
-## 📊 News Sources
+## ✨ Features
 
-- **TechCrunch AI** - Latest AI startup and technology news
-- **Wired AI** - In-depth AI analysis and features  
-- **The Verge AI** - Consumer-focused AI technology coverage
-- **VentureBeat AI** - Enterprise and business AI news
-- **MIT Technology Review** - Academic and research AI developments
-- **Ars Technica AI** - Technical AI analysis and reviews
-- **ZDNet AI** - Business technology and AI implementation
-- **Forbes AI** - Business and investment AI coverage
-- **Bloomberg AI** - Financial and market AI news
-
-## 📁 Project Structure
-
-```
-news digest/
-├── extract_links.py              # Core link extraction function
-├── filter_links.py               # Link filtering utilities  
-├── multi_source_ai_digest.py     # 🎯 MAIN SYSTEM (run this!)
-├── requirements.txt              # Dependencies
-├── comprehensive_ai_digest.txt   # Latest output
-└── README.md                     # This file
-```
+- 🌍 **Multi-source collection** from 9 major tech news sites
+- 🧠 **AI-powered summarization** using OpenAI GPT-4o-mini
+- 🇷🇺 **Russian language** summaries and interface
+- 📱 **Telegram integration** with beautiful formatting
+- 🗄️ **Smart deduplication** with SQLite database
+- ⏰ **Scheduled posting** with configurable timing
+- 🐳 **Docker deployment** for easy hosting
+- 📊 **Comprehensive logging** and monitoring
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.x
-- No external dependencies needed (uses only built-in Python libraries)
+- Docker and Docker Compose
+- OpenAI API key
+- Telegram Bot Token and Channel ID
 
-### Run the System
+### 1. Clone and Setup
 ```bash
-python3 multi_source_ai_digest.py
+git clone <your-repo-url>
+cd ai-news-digest-bot
+cp config/.env.example .env
 ```
 
-### Sample Output
-```
-🤖 COMPREHENSIVE AI NEWS DIGEST
-================================================================================
-🔄 Fetching articles from all sources...
-  📰 Fetching from TechCrunch...
-    ✅ Found 39 articles
-  📰 Fetching from Wired...
-    ✅ Found 27 articles
-  [... more sources ...]
-
-📊 Total articles collected: 261
-🔍 Calculating relevance scores...
-
-🏆 TOP 15 MOST RELEVANT AI ARTICLES
-================================================================================
-#1 | Score: 75 | [Forbes]
-    📰 Google may launch low-cost AI plan to rival ChatGPT
-    🔗 https://www.forbes.com/sites/paulmonckton/2025/07/26/google-may-launch-low-cost-ai-plan-to-rival-chatgpt/
-    📊 Top factors: High-value: chatgpt: +20, High-value: gpt: +15, High-value: launch: +10
-
-#2 | Score: 71 | [VentureBeat]
-    📰 ChatGPT router that automatically selects the right OpenAI model
-    🔗 https://venturebeat.com/ai/a-chatgpt-router-that-automatically-selects-the-right-openai-model/
-    📊 Top factors: High-value: openai: +20, High-value: chatgpt: +20, High-value: gpt: +15
+### 2. Configure Environment
+Edit `.env` file with your credentials:
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token_here
+TELEGRAM_CHANNEL_ID=@your_channel_username
 ```
 
-## 🧠 Relevance Scoring System
+### 3. Deploy
+```bash
+cd scripts/
+./deploy.sh start
+```
 
-The system uses a sophisticated scoring algorithm based on:
+### 4. Test
+```bash
+./deploy.sh test    # Run immediate test
+./deploy.sh logs    # View real-time logs
+./deploy.sh status  # Check bot status
+```
 
-### High-Value Keywords (15-20 points)
-- `openai`, `chatgpt`, `gpt`, `claude`, `gemini`
-- `breakthrough`, `launch`, `release`, `announces`
+## 📁 Project Structure
 
-### AI Companies (6-15 points)  
-- `google`, `microsoft`, `nvidia`, `anthropic`, `meta`
-- `tesla`, `apple`, `amazon`, `mistral`
+```
+ai-news-digest-bot/
+├── src/                    # Source code
+│   ├── main.py            # Main entry point
+│   ├── extractors/        # News collection modules
+│   ├── services/          # Core business logic
+│   └── utils/             # Utility functions
+├── config/                # Configuration files
+├── scripts/               # Deployment scripts
+├── docs/                  # Documentation
+└── Dockerfile             # Docker configuration
+```
 
-### Technical Terms (4-10 points)
-- `artificial-intelligence`, `machine-learning`, `llm`
-- `automation`, `robot`, `algorithm`, `neural`
+For detailed structure, see [Project Structure](docs/project_structure.md).
 
-### Source Quality Bonus (6-12 points)
-- MIT Tech Review: +12, Wired: +10, Bloomberg: +10
-- Ars Technica: +9, TechCrunch: +8, The Verge: +8
+## 🎯 How It Works
 
-### Recency Bonus (4-8 points)
-- Current year articles get bonus points
-- Recent articles ranked higher
+1. **🔍 Collection**: Scrapes articles from 9 major AI news sources
+2. **📊 Scoring**: Ranks articles by relevance using keyword analysis
+3. **📄 Extraction**: Downloads full article content with source-specific parsers
+4. **🤖 Summarization**: Generates concise Russian summaries using OpenAI
+5. **💾 Storage**: Saves to SQLite database with deduplication
+6. **📱 Publishing**: Posts formatted digest to Telegram channel
+7. **⏰ Automation**: Runs daily at configured time
 
-## ⚙️ Customization
+## 📱 Sample Output
 
-### Change Number of Articles
-Edit `multi_source_ai_digest.py`:
+```
+🤖 Дайджест ИИ - 2025-01-27
+📈 Самые важные новости искусственного интеллекта за сегодня
+
+1. Google May Launch Low-Cost AI Plan To Rival ChatGPT
+📰 Forbes • Google разрабатывает новый более доступный тариф "Gemini AI Lite"...
+🔗 Читать
+
+2. OpenAI unveils 'ChatGPT agent' that gives ChatGPT its own...
+📰 VentureBeat • OpenAI представила новый функционал ChatGPT agent...
+🔗 Читать
+
+@LetsTalkAI
+#AI #ИИ #OpenAI #Google #ChatGPT #TechNews
+```
+
+## 🛠️ Commands
+
+### Docker Commands
+```bash
+./deploy.sh start     # Start the bot
+./deploy.sh stop      # Stop the bot
+./deploy.sh restart   # Restart the bot
+./deploy.sh test      # Run test digest
+./deploy.sh logs      # View logs
+./deploy.sh status    # Check status
+./deploy.sh build     # Rebuild image
+```
+
+### Local Development
+```bash
+python src/main.py run-once    # One-time execution
+python src/main.py collect     # Collect articles only
+python src/main.py digest      # Create digest only
+python src/main.py schedule    # Start scheduler
+```
+
+## ⚙️ Configuration
+
+### Environment Variables
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `OPENAI_API_KEY` | OpenAI API key for summarization | Required |
+| `TELEGRAM_BOT_TOKEN` | Telegram bot token | Required |
+| `TELEGRAM_CHANNEL_ID` | Channel username or ID | Required |
+| `MAX_ARTICLES_PER_DIGEST` | Max articles in digest | 15 |
+| `SUMMARY_MAX_WORDS` | Max words per summary | 100 |
+| `DIGEST_TIME` | Daily posting time (24h format) | 09:00 |
+
+### News Sources
+- **TechCrunch** - AI category
+- **Wired** - Artificial Intelligence
+- **The Verge** - AI coverage
+- **VentureBeat** - AI section
+- **MIT Technology Review** - AI topic
+- **Ars Technica** - AI articles
+- **ZDNet** - AI news
+- **Forbes** - AI section
+- **Bloomberg** - AI topics
+
+## 📊 Monitoring
+
+### View Statistics
+```bash
+./deploy.sh status
+```
+
+### Check Logs
+```bash
+./deploy.sh logs
+```
+
+### Database Stats
 ```python
-articles = create_comprehensive_ai_digest(top_n=15)  # Change 15 to any number
+from src.services.database import NewsDatabase
+db = NewsDatabase()
+stats = db.get_stats(days=7)
+print(stats)
 ```
 
-### Modify Scoring Keywords
-Edit the keyword dictionaries in `calculate_relevance_score()` function:
-```python
-high_value_keywords = {
-    'your_keyword': 20,  # Add your own high-value terms
-    # ... existing keywords
-}
-```
+## 🔧 Development
 
-## 📄 File Descriptions
-
-### Core Files
-- **`multi_source_ai_digest.py`** - Main system that fetches from all sources and ranks articles
-- **`extract_links.py`** - Core HTML link extraction using regex
-- **`filter_links.py`** - Utility functions for filtering links by substring, domain, etc.
-
-### Output Files
-- **`comprehensive_ai_digest.txt`** - Latest digest with top 15 articles and scoring breakdown
-
-### Configuration
-- **`requirements.txt`** - Dependencies (currently none - uses only Python built-ins)
-
-## 🛠️ Development
-
-### Running Individual Components
+### Setup Development Environment
 ```bash
-# Test link extraction
-python3 extract_links.py
-
-# Test link filtering
-python3 filter_links.py
-
-# Run full digest
-python3 multi_source_ai_digest.py
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r config/requirements.txt
 ```
 
-### Adding New Sources
-1. Create a new extraction function in `multi_source_ai_digest.py`
-2. Add it to the `sources` list in `fetch_all_ai_sources()`
-3. Update the source bonus scoring in `calculate_relevance_score()`
-
-## 📋 Usage Patterns
-
-### Daily News Digest
+### Run Tests
 ```bash
-# Run every morning for fresh AI news
-python3 multi_source_ai_digest.py
+python src/main.py run-once
 ```
 
-### Weekly Deep Dive
+### Add New Sources
+1. Edit `src/extractors/source_extractor.py`
+2. Add extraction logic to `src/extractors/article_extractor.py`
+3. Test with new source
+
+## 🐳 Production Deployment
+
+### Using systemd (Linux)
 ```bash
-# Modify top_n=30 for weekly comprehensive overview
-python3 multi_source_ai_digest.py
+sudo cp scripts/ai-digest-bot.service /etc/systemd/system/
+sudo systemctl enable ai-digest-bot
+sudo systemctl start ai-digest-bot
 ```
 
-### Research Mode
+### Using Docker Swarm
 ```bash
-# Use filter_links.py to find specific topics
-python3 filter_links.py
+docker stack deploy -c scripts/docker-compose.yml ai-digest
 ```
 
-## 🎯 Goals Achieved
+### Cloud Deployment
+- Works on any Docker-compatible platform
+- AWS ECS, Google Cloud Run, Azure Container Instances
+- Requires persistent volume for database
 
-- ✅ **Multi-source aggregation** from 8 major AI news sites
-- ✅ **Intelligent relevance ranking** with transparent scoring
-- ✅ **Automated daily digest** generation
-- ✅ **Clean output format** for easy consumption
-- ✅ **Zero external dependencies** - runs anywhere Python runs
-- ✅ **Customizable scoring** for different AI interests
+## 🔍 Troubleshooting
 
-## 🚧 Known Limitations
+### Common Issues
 
-- **Bloomberg**: May be blocked with 403 errors (paywall protection)
-- **Rate Limiting**: 1-second delays between sources to be respectful
-- **Dynamic Content**: Some sites use JavaScript loading (may miss some articles)
-- **Language**: Currently optimized for English-language sources
+**Bot not posting to channel:**
+- Verify bot is admin in channel
+- Check `TELEGRAM_CHANNEL_ID` format
+- Test with `./deploy.sh test`
 
-## 🔄 Automation Ideas
+**OpenAI API errors:**
+- Verify API key is correct
+- Check account has credits
+- Bot uses fallback summaries if API fails
 
-### Cron Job (Daily at 8 AM)
-```bash
-0 8 * * * cd /path/to/news-digest && python3 multi_source_ai_digest.py
-```
+**No articles collected:**
+- Check internet connectivity
+- Some sources may be temporarily unavailable
+- Review logs for specific errors
 
-### GitHub Actions (Weekly)
-Set up automated weekly digests and commit results to repository.
+### Getting Help
+1. Check [Setup Guide](docs/setup_guide.md)
+2. Review logs: `./deploy.sh logs`
+3. Test individual components: `./deploy.sh test`
 
-## 📈 Future Enhancements
+## 📝 Documentation
 
-- [ ] Email digest automation
-- [ ] Sentiment analysis scoring
-- [ ] Article summary generation  
-- [ ] RSS feed output
-- [ ] Web dashboard interface
-- [ ] Historical trending analysis
+- [Setup Guide](docs/setup_guide.md) - Detailed installation instructions
+- [Project Structure](docs/project_structure.md) - Code organization
+- [API Documentation](docs/api.md) - Service interfaces
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- OpenAI for GPT-4o-mini API
+- Telegram for Bot API
+- All the news sources for their content
+- Open source community for the tools and libraries
 
 ---
 
-**Built for AI enthusiasts who want to stay on top of the rapidly evolving AI landscape! 🚀** 
+**Made with ❤️ for the AI community**
+
+For support or questions, please open an issue on GitHub. 

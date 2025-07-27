@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
 """
-Daily AI News Digest Bot
+AI News Digest Bot - Main Entry Point
 Integrates all components to create and post daily AI news digests to Telegram.
 """
 
 import os
+import sys
 import schedule
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from dotenv import load_dotenv
 
+# Add src to path for imports
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
 # Import our custom modules
-from multi_source_ai_digest import fetch_all_ai_sources, calculate_relevance_score
-from article_extractor import ArticleExtractor
-from ai_summarizer import AISummarizer
-from database import NewsDatabase
-from telegram_bot import TelegramDigestBot
-from logger_config import setup_logging, get_logger
+from src.extractors import fetch_all_ai_sources, calculate_relevance_score, ArticleExtractor
+from src.services import AISummarizer, NewsDatabase, TelegramDigestBot
+from src.utils import setup_logging, get_logger
 
 # Load environment variables
 load_dotenv()
@@ -162,18 +163,18 @@ class DailyDigestBot:
                     date
                 )
                 
-                print(f"✅ Digest posted successfully! Message ID: {result['message_id']}")
+                logger.info(f"✅ Digest posted successfully! Message ID: {result['message_id']}")
                 return {
                     'success': True,
                     'message_id': result['message_id'],
                     'articles_count': len(top_articles)
                 }
             else:
-                print(f"❌ Failed to post digest: {result['error']}")
+                logger.error(f"❌ Failed to post digest: {result['error']}")
                 return {'success': False, 'reason': 'telegram_error', 'error': result['error']}
                 
         except Exception as e:
-            print(f"❌ Error posting digest: {e}")
+            logger.error(f"❌ Error posting digest: {e}")
             return {'success': False, 'reason': 'exception', 'error': str(e)}
     
     def run_daily_job(self):

@@ -1,4 +1,4 @@
-from extract_links import extract_links
+from ..utils.extract_links import extract_links
 import urllib.request
 import re
 from datetime import datetime

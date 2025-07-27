@@ -86,7 +86,8 @@ case $COMMAND in
         echo ""
         echo "🔍 Health check:"
         docker-compose exec ai-digest-bot python -c "
-from database import NewsDatabase
+import sys; sys.path.append('/app')
+from src.services.database import NewsDatabase
 import os
 db = NewsDatabase('/app/data/news_digest.db')
 stats = db.get_stats(days=7)
@@ -98,7 +99,7 @@ print(f'Average relevance score: {stats[\"article_stats\"][\"avg_score\"]:.1f}')
     
     "test")
         echo "🧪 Running test digest..."
-        docker-compose exec ai-digest-bot python daily_digest_bot.py run-once
+        docker-compose exec ai-digest-bot python src/main.py run-once
         ;;
     
     "build")

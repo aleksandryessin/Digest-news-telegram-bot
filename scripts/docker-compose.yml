@@ -20,8 +20,8 @@ services:
     
     volumes:
       # Persist database and logs
-      - ./data:/app/data
-      - ./logs:/app/logs
+      - ../data:/app/data
+      - ../logs:/app/logs
     
     # Optional: expose port for health checks
     ports:
